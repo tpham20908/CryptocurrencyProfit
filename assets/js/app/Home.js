@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import DatePicker from "react-datepicker";
+import moment from "moment";
 
 class Home extends Component {
   constructor() {
@@ -33,6 +34,7 @@ class Home extends Component {
               onChange={this.props.handleDateChange}
               showMonthDropdown
               showYearDropdown
+              maxDate={moment()}
               useShortMonthInDropdown
               scrollableYearDropdown
               yearDropdownItemNumber={20}
