@@ -5,7 +5,7 @@ const VENDOR_LIBS = ["babel-polyfill", "redux", "react-redux", "react-dom"];
 
 module.exports = {
   entry: {
-    app: "./assets/js/app/app.js",
+    app: "./assets/js/app/App.js",
     vendor: VENDOR_LIBS
   },
   output: {

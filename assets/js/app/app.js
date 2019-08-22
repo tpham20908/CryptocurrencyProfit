@@ -1,16 +1,27 @@
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
 
+import Home from "./Home";
+import Results from "./Results";
+
 class Layout extends Component {
   constructor() {
     super();
     this.state = {
-      name: "Joe"
+      location: "home"
     };
   }
-  clickedBtn = () => {
-    console.log("swag");
+
+  routingSystem = () => {
+    switch (this.state.location) {
+      case "results":
+        return <Results />;
+        break;
+      default:
+        return <Home />;
+    }
   };
+
   render() {
     return (
       <div className="home">
@@ -21,6 +32,7 @@ class Layout extends Component {
               <a href="#">Register</a>
             </nav>
           </header>
+          {this.routingSystem()}
         </div>
       </div>
     );
