@@ -2,6 +2,18 @@ import React, { Component } from "react";
 
 class Results extends Component {
   render() {
+    const { buyingDate, buyingData, sellingDate, sellingData } = this.props;
+
+    const buyingDateConverted = new Date(buyingDate.unix() * 1000);
+    const sellingDateConverted = new Date(sellingDate.unix() * 1000);
+
+    const buyingDay = buyingDateConverted.getUTCDate();
+    const buyingMonth = buyingDateConverted.getMonth() + 1;
+    const buyingYear = buyingDateConverted.getFullYear();
+    const sellingDay = sellingDateConverted.getUTCDate();
+    const sellingMonth = sellingDateConverted.getMonth() + 1;
+    const sellingYear = sellingDateConverted.getFullYear();
+
     return (
       <section id="results">
         <div className="container">

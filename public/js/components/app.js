@@ -49,6 +49,12 @@ var Home = function (_Component) {
   _createClass(Home, [{
     key: "render",
     value: function render() {
+      var _props = this.props,
+          globalState = _props.globalState,
+          handleBuyingDate = _props.handleBuyingDate,
+          handleSellingDate = _props.handleSellingDate,
+          setLocation = _props.setLocation;
+
       return _react2.default.createElement(
         "section",
         { id: "home" },
@@ -80,12 +86,12 @@ var Home = function (_Component) {
             _react2.default.createElement("input", { type: "text", name: "amount" }),
             _react2.default.createElement(
               "label",
-              { htmlFor: "date" },
-              "Date"
+              null,
+              "Buying Date"
             ),
             _react2.default.createElement(_reactDatepicker2.default, {
-              selected: this.props.globalState.date,
-              onChange: this.props.handleDateChange,
+              selected: globalState.buyingDate,
+              onChange: handleBuyingDate,
               showMonthDropdown: true,
               showYearDropdown: true,
               maxDate: (0, _moment2.default)(),
@@ -94,8 +100,25 @@ var Home = function (_Component) {
               yearDropdownItemNumber: 20
             }),
             _react2.default.createElement(
+              "label",
+              null,
+              "Selling Date"
+            ),
+            _react2.default.createElement(_reactDatepicker2.default, {
+              selected: globalState.sellingDate,
+              onChange: handleSellingDate,
+              showMonthDropdown: true,
+              showYearDropdown: true,
+              maxDate: (0, _moment2.default)(),
+              useShortMonthInDropdown: true,
+              scrollableYearDropdown: true,
+              yearDropdownItemNumber: 5
+            }),
+            _react2.default.createElement(
               "button",
-              { type: "submit" },
+              { onClick: function onClick() {
+                  return setLocation("results");
+                } },
               "Check Profit"
             )
           )
@@ -147,6 +170,23 @@ var Results = function (_Component) {
   _createClass(Results, [{
     key: "render",
     value: function render() {
+      var _props = this.props,
+          buyingDate = _props.buyingDate,
+          buyingData = _props.buyingData,
+          sellingDate = _props.sellingDate,
+          sellingData = _props.sellingData;
+
+
+      var buyingDateConverted = new Date(buyingDate.unix() * 1000);
+      var sellingDateConverted = new Date(sellingDate.unix() * 1000);
+
+      var buyingDay = buyingDateConverted.getUTCDate();
+      var buyingMonth = buyingDateConverted.getMonth() + 1;
+      var buyingYear = buyingDateConverted.getFullYear();
+      var sellingDay = sellingDateConverted.getUTCDate();
+      var sellingMonth = sellingDateConverted.getMonth() + 1;
+      var sellingYear = sellingDateConverted.getFullYear();
+
       return _react2.default.createElement(
         "section",
         { id: "results" },
@@ -259,21 +299,21 @@ var Layout = function (_Component) {
 
     var _this = _possibleConstructorReturn(this, (Layout.__proto__ || Object.getPrototypeOf(Layout)).call(this));
 
-    _this.apiCall = function (fsym, tsym, ts) {
+    _this.getData = function (fsym, tsym, ts) {
       var url = "https://min-api.cryptocompare.com/data/pricehistorical?fsym=" + fsym + "&tsyms=" + tsym + "&ts=" + ts;
 
       return new Promise(function (resolve, reject) {
         _axios2.default.get(url).then(function (res) {
-          return resolve(res.data[fsym]);
+          return resolve(res.data);
         }).catch(function (err) {
           return console.log(err);
         });
       });
     };
 
-    _this.handleDateChange = function () {
+    _this.handleBuyingDate = function () {
       var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(date) {
-        var _this$state, fsym, tsym, ts, previousData;
+        var _this$state, fsym, tsym, ts, buyingData;
 
         return regeneratorRuntime.wrap(function _callee$(_context) {
           while (1) {
@@ -282,12 +322,12 @@ var Layout = function (_Component) {
                 _this$state = _this.state, fsym = _this$state.fsym, tsym = _this$state.tsym;
                 ts = date.unix();
                 _context.next = 4;
-                return _this.apiCall(fsym, tsym, ts);
+                return _this.getData(fsym, tsym, ts);
 
               case 4:
-                previousData = _context.sent;
+                buyingData = _context.sent;
 
-                _this.setState({ date: date, previousData: previousData });
+                _this.setState({ buyingDate: date, buyingData: buyingData });
 
               case 6:
               case "end":
@@ -302,23 +342,61 @@ var Layout = function (_Component) {
       };
     }();
 
+    _this.handleSellingDate = function () {
+      var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(date) {
+        var _this$state2, fsym, tsym, ts, sellingData;
+
+        return regeneratorRuntime.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                _this$state2 = _this.state, fsym = _this$state2.fsym, tsym = _this$state2.tsym;
+                ts = date.unix();
+                _context2.next = 4;
+                return _this.getData(fsym, tsym, ts);
+
+              case 4:
+                sellingData = _context2.sent;
+
+                _this.setState({ sellingDate: date, sellingData: sellingData });
+
+              case 6:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2, _this2);
+      }));
+
+      return function (_x2) {
+        return _ref2.apply(this, arguments);
+      };
+    }();
+
     _this.routingSystem = function () {
       switch (_this.state.location) {
         case "results":
-          return _react2.default.createElement(_Results2.default, null);
+          return _react2.default.createElement(_Results2.default, _this.state);
           break;
         default:
           return _react2.default.createElement(_Home2.default, {
-            handleDateChange: _this.handleDateChange,
-            globalState: _this.state
+            handleBuyingDate: _this.handleBuyingDate,
+            handleSellingDate: _this.handleSellingDate,
+            globalState: _this.state,
+            setLocation: _this.setLocation
           });
       }
     };
 
+    _this.setLocation = function (location) {
+      _this.setState({ location: location });
+    };
+
     _this.state = {
-      currentData: {},
-      previousData: {},
-      date: (0, _moment2.default)(),
+      buyingData: {},
+      sellingData: {},
+      buyingDate: (0, _moment2.default)(),
+      sellingDate: (0, _moment2.default)(),
       fsym: "ETH", // from symbol
       tsym: "USD", // to symbol -- can be multiple value 'BTC,USD,CAD,EUR'
       location: "home"
@@ -327,49 +405,9 @@ var Layout = function (_Component) {
   }
 
   _createClass(Layout, [{
-    key: "componentDidMount",
-    value: function () {
-      var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2() {
-        var _state, date, fsym, tsym, ts, currentData;
-
-        return regeneratorRuntime.wrap(function _callee2$(_context2) {
-          while (1) {
-            switch (_context2.prev = _context2.next) {
-              case 0:
-                _state = this.state, date = _state.date, fsym = _state.fsym, tsym = _state.tsym;
-                ts = date.unix();
-                _context2.next = 4;
-                return this.apiCall(fsym, tsym, ts);
-
-              case 4:
-                currentData = _context2.sent;
-
-                this.setState({ currentData: currentData });
-
-              case 6:
-              case "end":
-                return _context2.stop();
-            }
-          }
-        }, _callee2, this);
-      }));
-
-      function componentDidMount() {
-        return _ref2.apply(this, arguments);
-      }
-
-      return componentDidMount;
-    }()
-  }, {
     key: "render",
     value: function render() {
-      var currency = "USD";
-      var _state2 = this.state,
-          currentData = _state2.currentData,
-          previousData = _state2.previousData;
-
-      var currentPrice = currentData[currency];
-      var previousPrice = previousData[currency];
+      console.log(this.state.buyingData, this.state.sellingData);
 
       return _react2.default.createElement(
         "div",

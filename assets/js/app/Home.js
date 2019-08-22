@@ -11,6 +11,12 @@ class Home extends Component {
   }
 
   render() {
+    const {
+      globalState,
+      handleBuyingDate,
+      handleSellingDate,
+      setLocation
+    } = this.props;
     return (
       <section id="home">
         <div className="container">
@@ -28,10 +34,10 @@ class Home extends Component {
             <label htmlFor="amount">Crypto Amount</label>
             <input type="text" name="amount" />
 
-            <label htmlFor="date">Date</label>
+            <label>Buying Date</label>
             <DatePicker
-              selected={this.props.globalState.date}
-              onChange={this.props.handleDateChange}
+              selected={globalState.buyingDate}
+              onChange={handleBuyingDate}
               showMonthDropdown
               showYearDropdown
               maxDate={moment()}
@@ -40,7 +46,19 @@ class Home extends Component {
               yearDropdownItemNumber={20}
             />
 
-            <button type="submit">Check Profit</button>
+            <label>Selling Date</label>
+            <DatePicker
+              selected={globalState.sellingDate}
+              onChange={handleSellingDate}
+              showMonthDropdown
+              showYearDropdown
+              maxDate={moment()}
+              useShortMonthInDropdown
+              scrollableYearDropdown
+              yearDropdownItemNumber={5}
+            />
+
+            <button onClick={() => setLocation("results")}>Check Profit</button>
           </div>
         </div>
       </section>

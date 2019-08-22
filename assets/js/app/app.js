@@ -10,62 +10,66 @@ class Layout extends Component {
   constructor() {
     super();
     this.state = {
-      currentData: {},
-      previousData: {},
-      date: moment(),
+      buyingData: {},
+      sellingData: {},
+      buyingDate: moment(),
+      sellingDate: moment(),
       fsym: "ETH", // from symbol
       tsym: "USD", // to symbol -- can be multiple value 'BTC,USD,CAD,EUR'
       location: "home"
     };
   }
 
-  async componentDidMount() {
-    const { date, fsym, tsym } = this.state;
-    const ts = date.unix();
-    const currentData = await this.apiCall(fsym, tsym, ts);
-    this.setState({ currentData });
-  }
-
-  apiCall = (fsym, tsym, ts) => {
+  getData = (fsym, tsym, ts) => {
     const url = `https://min-api.cryptocompare.com/data/pricehistorical?fsym=${fsym}&tsyms=${tsym}&ts=${ts}`;
 
     return new Promise((resolve, reject) => {
       axios
         .get(url)
         .then(res => {
-          return resolve(res.data[fsym]);
+          return resolve(res.data);
         })
         .catch(err => console.log(err));
     });
   };
 
-  handleDateChange = async date => {
+  handleBuyingDate = async date => {
     const { fsym, tsym } = this.state;
     const ts = date.unix();
-    const previousData = await this.apiCall(fsym, tsym, ts);
-    this.setState({ date, previousData });
+    const buyingData = await this.getData(fsym, tsym, ts);
+    this.setState({ buyingDate: date, buyingData });
+  };
+
+  handleSellingDate = async date => {
+    const { fsym, tsym } = this.state;
+    const ts = date.unix();
+    const sellingData = await this.getData(fsym, tsym, ts);
+    this.setState({ sellingDate: date, sellingData });
   };
 
   routingSystem = () => {
     switch (this.state.location) {
       case "results":
-        return <Results />;
+        return <Results {...this.state} />;
         break;
       default:
         return (
           <Home
-            handleDateChange={this.handleDateChange}
+            handleBuyingDate={this.handleBuyingDate}
+            handleSellingDate={this.handleSellingDate}
             globalState={this.state}
+            setLocation={this.setLocation}
           />
         );
     }
   };
 
+  setLocation = location => {
+    this.setState({ location });
+  };
+
   render() {
-    const currency = "USD";
-    const { currentData, previousData } = this.state;
-    const currentPrice = currentData[currency];
-    const previousPrice = previousData[currency];
+    console.log(this.state.buyingData, this.state.sellingData);
 
     return (
       <div className="home">
