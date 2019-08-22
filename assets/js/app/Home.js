@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import DatePicker from "react-datepicker";
 
 class Home extends Component {
   constructor() {
@@ -27,7 +28,15 @@ class Home extends Component {
             <input type="text" name="amount" />
 
             <label htmlFor="date">Date</label>
-            <input type="text" name="date" />
+            <DatePicker
+              selected={this.props.globalState.date}
+              onChange={this.props.handleDateChange}
+              showMonthDropdown
+              showYearDropdown
+              useShortMonthInDropdown
+              scrollableYearDropdown
+              yearDropdownItemNumber={20}
+            />
 
             <button type="submit">Check Profit</button>
           </div>

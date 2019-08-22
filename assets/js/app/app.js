@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
+import DatePicker from "react-datepicker";
+import moment from "moment";
 
 import Home from "./Home";
 import Results from "./Results";
@@ -8,6 +10,7 @@ class Layout extends Component {
   constructor() {
     super();
     this.state = {
+      date: moment(),
       location: "home"
     };
   }
@@ -18,8 +21,17 @@ class Layout extends Component {
         return <Results />;
         break;
       default:
-        return <Home />;
+        return (
+          <Home
+            handleDateChange={this.handleDateChange}
+            globalState={this.state}
+          />
+        );
     }
+  };
+
+  handleDateChange = date => {
+    this.setState({ date }, () => console.log(this.state.date));
   };
 
   render() {

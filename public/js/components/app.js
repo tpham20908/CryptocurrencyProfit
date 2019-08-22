@@ -1,6 +1,6 @@
 webpackJsonp([0],{
 
-/***/ 230:
+/***/ 359:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12,9 +12,13 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _react = __webpack_require__(67);
+var _react = __webpack_require__(28);
 
 var _react2 = _interopRequireDefault(_react);
+
+var _reactDatepicker = __webpack_require__(152);
+
+var _reactDatepicker2 = _interopRequireDefault(_reactDatepicker);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -75,7 +79,15 @@ var Home = function (_Component) {
               { htmlFor: "date" },
               "Date"
             ),
-            _react2.default.createElement("input", { type: "text", name: "date" }),
+            _react2.default.createElement(_reactDatepicker2.default, {
+              selected: this.props.globalState.date,
+              onChange: this.props.handleDateChange,
+              showMonthDropdown: true,
+              showYearDropdown: true,
+              useShortMonthInDropdown: true,
+              scrollableYearDropdown: true,
+              yearDropdownItemNumber: 20
+            }),
             _react2.default.createElement(
               "button",
               { type: "submit" },
@@ -94,7 +106,7 @@ exports.default = Home;
 
 /***/ }),
 
-/***/ 231:
+/***/ 360:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -106,7 +118,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _react = __webpack_require__(67);
+var _react = __webpack_require__(28);
 
 var _react2 = _interopRequireDefault(_react);
 
@@ -190,7 +202,7 @@ exports.default = Results;
 
 /***/ }),
 
-/***/ 235:
+/***/ 364:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -198,19 +210,27 @@ exports.default = Results;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _react = __webpack_require__(67);
+var _react = __webpack_require__(28);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactDom = __webpack_require__(101);
+var _reactDom = __webpack_require__(80);
 
 var _reactDom2 = _interopRequireDefault(_reactDom);
 
-var _Home = __webpack_require__(230);
+var _reactDatepicker = __webpack_require__(152);
+
+var _reactDatepicker2 = _interopRequireDefault(_reactDatepicker);
+
+var _moment = __webpack_require__(1);
+
+var _moment2 = _interopRequireDefault(_moment);
+
+var _Home = __webpack_require__(359);
 
 var _Home2 = _interopRequireDefault(_Home);
 
-var _Results = __webpack_require__(231);
+var _Results = __webpack_require__(360);
 
 var _Results2 = _interopRequireDefault(_Results);
 
@@ -236,11 +256,21 @@ var Layout = function (_Component) {
           return _react2.default.createElement(_Results2.default, null);
           break;
         default:
-          return _react2.default.createElement(_Home2.default, null);
+          return _react2.default.createElement(_Home2.default, {
+            handleDateChange: _this.handleDateChange,
+            globalState: _this.state
+          });
       }
     };
 
+    _this.handleDateChange = function (date) {
+      _this.setState({ date: date }, function () {
+        return console.log(_this.state.date);
+      });
+    };
+
     _this.state = {
+      date: (0, _moment2.default)(),
       location: "home"
     };
     return _this;
@@ -288,4 +318,4 @@ _reactDom2.default.render(_react2.default.createElement(Layout, null), app);
 
 /***/ })
 
-},[235]);
+},[364]);
