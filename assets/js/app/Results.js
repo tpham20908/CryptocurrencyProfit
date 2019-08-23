@@ -1,6 +1,10 @@
 import React, { Component } from "react";
 
 class Results extends Component {
+  componentDidMount() {
+    (adsbygoogle = window.adsbygoogle || []).push({});
+  }
+
   formatDate = (day, month, year) => {
     let monthText;
     switch (month) {
@@ -51,7 +55,7 @@ class Results extends Component {
     const statement =
       profitPercentage >= 100
         ? `You would make ${result}% profit.`
-        : `You would lose ${result} your investment.`;
+        : `You would lose ${result}% your investment.`;
 
     return statement;
   };
@@ -95,7 +99,15 @@ class Results extends Component {
       <section id="results">
         <div className="container">
           <div className="col-md-12">
-            <div className="ads">Google Adsense</div>
+            <div className="ads">
+              <ins
+                className="adsbygoogle"
+                style={{ display: "block" }}
+                data-ad-client="ca-pub-4307977294782063"
+                data-ad-slot="7806394673"
+                data-ad-format="auto"
+              />
+            </div>
           </div>
           <div className="col-md-12">
             <h2>
@@ -112,9 +124,20 @@ class Results extends Component {
             <a href="#" className="main-btn active">
               Create account to keep track of all your records
             </a>
+            <a href="/" className="main-btn">
+              Another transaction
+            </a>
           </div>
           <div className="col-md-12">
-            <div className="ads">Google Adsense</div>
+            <div className="ads">
+              <ins
+                className="adsbygoogle"
+                style={{ display: "block" }}
+                data-ad-client="ca-pub-4307977294782063"
+                data-ad-slot="7806394673"
+                data-ad-format="auto"
+              />
+            </div>
           </div>
         </div>
       </section>

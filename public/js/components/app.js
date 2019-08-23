@@ -223,13 +223,18 @@ var Results = function (_Component) {
     }, _this.profitStatement = function (buyingAmount, sellingAmount) {
       var profitPercentage = (sellingAmount / buyingAmount * 100).toFixed(2);
       var result = Math.abs(profitPercentage - 100).toFixed(2);
-      var statement = profitPercentage >= 100 ? "You would make " + result + "% profit." : "You would lose " + result + " your investment.";
+      var statement = profitPercentage >= 100 ? "You would make " + result + "% profit." : "You would lose " + result + "% your investment.";
 
       return statement;
     }, _temp), _possibleConstructorReturn(_this, _ret);
   }
 
   _createClass(Results, [{
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      (adsbygoogle = window.adsbygoogle || []).push({});
+    }
+  }, {
     key: "render",
     value: function render() {
       var _props = this.props,
@@ -270,7 +275,13 @@ var Results = function (_Component) {
             _react2.default.createElement(
               "div",
               { className: "ads" },
-              "Google Adsense"
+              _react2.default.createElement("ins", {
+                className: "adsbygoogle",
+                style: { display: "block" },
+                "data-ad-client": "ca-pub-4307977294782063",
+                "data-ad-slot": "7806394673",
+                "data-ad-format": "auto"
+              })
             )
           ),
           _react2.default.createElement(
@@ -311,6 +322,11 @@ var Results = function (_Component) {
               "a",
               { href: "#", className: "main-btn active" },
               "Create account to keep track of all your records"
+            ),
+            _react2.default.createElement(
+              "a",
+              { href: "/", className: "main-btn" },
+              "Another transaction"
             )
           ),
           _react2.default.createElement(
@@ -319,7 +335,13 @@ var Results = function (_Component) {
             _react2.default.createElement(
               "div",
               { className: "ads" },
-              "Google Adsense"
+              _react2.default.createElement("ins", {
+                className: "adsbygoogle",
+                style: { display: "block" },
+                "data-ad-client": "ca-pub-4307977294782063",
+                "data-ad-slot": "7806394673",
+                "data-ad-format": "auto"
+              })
             )
           )
         )
