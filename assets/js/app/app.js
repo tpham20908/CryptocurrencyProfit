@@ -11,13 +11,20 @@ class Layout extends Component {
     super();
     this.state = {
       buyingData: {},
-      sellingData: {},
       buyingDate: moment(),
-      sellingDate: moment(),
+      cryptoAmount: "",
       fsym: "ETH", // from symbol
-      tsym: "USD", // to symbol -- can be multiple value 'BTC,USD,CAD,EUR'
-      location: "home"
+      location: "home",
+      sellingDate: moment(),
+      sellingData: {},
+      tsym: "USD" // to symbol -- can be multiple value 'BTC,USD,CAD,EUR'
     };
+  }
+
+  async componentDidMount() {
+    const { fsym, sellingDate, tsym } = this.state;
+    const data = await this.getData(fsym, tsym, sellingDate);
+    this.setState({ buyingData: data, sellingData: data });
   }
 
   getData = (fsym, tsym, ts) => {
@@ -58,10 +65,15 @@ class Layout extends Component {
             handleBuyingDate={this.handleBuyingDate}
             handleSellingDate={this.handleSellingDate}
             globalState={this.state}
+            setCryptoAmount={this.setCryptoAmount}
             setLocation={this.setLocation}
           />
         );
     }
+  };
+
+  setCryptoAmount = event => {
+    this.setState({ cryptoAmount: event.target.value });
   };
 
   setLocation = location => {
@@ -69,8 +81,6 @@ class Layout extends Component {
   };
 
   render() {
-    console.log(this.state.buyingData, this.state.sellingData);
-
     return (
       <div className="home">
         <div className="container">

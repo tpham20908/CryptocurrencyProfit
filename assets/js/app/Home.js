@@ -15,6 +15,7 @@ class Home extends Component {
       globalState,
       handleBuyingDate,
       handleSellingDate,
+      setCryptoAmount,
       setLocation
     } = this.props;
     return (
@@ -32,7 +33,12 @@ class Home extends Component {
             <h2>Enter Transaction</h2>
 
             <label htmlFor="amount">Crypto Amount</label>
-            <input type="text" name="amount" />
+            <input
+              type="number"
+              name="amount"
+              value={globalState.cryptoAmount}
+              onChange={setCryptoAmount}
+            />
 
             <label>Buying Date</label>
             <DatePicker

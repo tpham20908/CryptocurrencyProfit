@@ -53,6 +53,7 @@ var Home = function (_Component) {
           globalState = _props.globalState,
           handleBuyingDate = _props.handleBuyingDate,
           handleSellingDate = _props.handleSellingDate,
+          setCryptoAmount = _props.setCryptoAmount,
           setLocation = _props.setLocation;
 
       return _react2.default.createElement(
@@ -83,7 +84,12 @@ var Home = function (_Component) {
               { htmlFor: "amount" },
               "Crypto Amount"
             ),
-            _react2.default.createElement("input", { type: "text", name: "amount" }),
+            _react2.default.createElement("input", {
+              type: "number",
+              name: "amount",
+              value: globalState.cryptoAmount,
+              onChange: setCryptoAmount
+            }),
             _react2.default.createElement(
               "label",
               null,
@@ -162,9 +168,65 @@ var Results = function (_Component) {
   _inherits(Results, _Component);
 
   function Results() {
+    var _ref;
+
+    var _temp, _this, _ret;
+
     _classCallCheck(this, Results);
 
-    return _possibleConstructorReturn(this, (Results.__proto__ || Object.getPrototypeOf(Results)).apply(this, arguments));
+    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = Results.__proto__ || Object.getPrototypeOf(Results)).call.apply(_ref, [this].concat(args))), _this), _this.formatDate = function (day, month, year) {
+      var monthText = void 0;
+      switch (month) {
+        case 1:
+          monthText = "Jan";
+          break;
+        case 2:
+          monthText = "Feb";
+          break;
+        case 3:
+          monthText = "Mar";
+          break;
+        case 4:
+          monthText = "Apr";
+          break;
+        case 5:
+          monthText = "May";
+          break;
+        case 6:
+          monthText = "Jun";
+          break;
+        case 7:
+          monthText = "Jul";
+          break;
+        case 8:
+          monthText = "Aug";
+          break;
+        case 9:
+          monthText = "Sep";
+          break;
+        case 10:
+          monthText = "Oct";
+          break;
+        case 11:
+          monthText = "Nov";
+          break;
+        case 12:
+          monthText = "Dec";
+          break;
+      }
+
+      return monthText + " " + day + " " + year;
+    }, _this.profitStatement = function (buyingAmount, sellingAmount) {
+      var profitPercentage = (sellingAmount / buyingAmount * 100).toFixed(2);
+      var result = Math.abs(profitPercentage - 100).toFixed(2);
+      var statement = profitPercentage >= 100 ? "You would make " + result + "% profit." : "You would lose " + result + " your investment.";
+
+      return statement;
+    }, _temp), _possibleConstructorReturn(_this, _ret);
   }
 
   _createClass(Results, [{
@@ -173,19 +235,28 @@ var Results = function (_Component) {
       var _props = this.props,
           buyingDate = _props.buyingDate,
           buyingData = _props.buyingData,
+          cryptoAmount = _props.cryptoAmount,
+          fsym = _props.fsym,
           sellingDate = _props.sellingDate,
-          sellingData = _props.sellingData;
+          sellingData = _props.sellingData,
+          tsym = _props.tsym;
 
 
       var buyingDateConverted = new Date(buyingDate.unix() * 1000);
       var sellingDateConverted = new Date(sellingDate.unix() * 1000);
-
-      var buyingDay = buyingDateConverted.getUTCDate();
+      var buyingDay = buyingDateConverted.getDate();
       var buyingMonth = buyingDateConverted.getMonth() + 1;
       var buyingYear = buyingDateConverted.getFullYear();
-      var sellingDay = sellingDateConverted.getUTCDate();
+      var sellingDay = sellingDateConverted.getDate();
       var sellingMonth = sellingDateConverted.getMonth() + 1;
       var sellingYear = sellingDateConverted.getFullYear();
+
+      var formatedBuyingDate = this.formatDate(buyingDay, buyingMonth, buyingYear);
+
+      var formatedSellingDate = this.formatDate(sellingDay, sellingMonth, sellingYear);
+
+      var buyingAmount = (cryptoAmount * buyingData[fsym][tsym]).toFixed(2);
+      var sellingAmount = (cryptoAmount * sellingData[fsym][tsym]).toFixed(2);
 
       return _react2.default.createElement(
         "section",
@@ -208,17 +279,33 @@ var Results = function (_Component) {
             _react2.default.createElement(
               "h2",
               null,
-              "Your $1200 dollars investment is now"
+              "Your $",
+              buyingAmount,
+              " ",
+              tsym,
+              " investment on ",
+              formatedBuyingDate,
+              " ",
+              "would be"
             ),
             _react2.default.createElement(
               "h1",
               null,
-              "$7300"
+              "$",
+              sellingAmount
             ),
             _react2.default.createElement(
-              "h3",
+              "h2",
               null,
-              "You made 400% profit."
+              "on ",
+              formatedSellingDate,
+              ".",
+              " ",
+              _react2.default.createElement(
+                "span",
+                { className: "profit-percentage" },
+                this.profitStatement(buyingAmount, sellingAmount)
+              )
             ),
             _react2.default.createElement(
               "a",
@@ -383,9 +470,14 @@ var Layout = function (_Component) {
             handleBuyingDate: _this.handleBuyingDate,
             handleSellingDate: _this.handleSellingDate,
             globalState: _this.state,
+            setCryptoAmount: _this.setCryptoAmount,
             setLocation: _this.setLocation
           });
       }
+    };
+
+    _this.setCryptoAmount = function (event) {
+      _this.setState({ cryptoAmount: event.target.value });
     };
 
     _this.setLocation = function (location) {
@@ -394,21 +486,53 @@ var Layout = function (_Component) {
 
     _this.state = {
       buyingData: {},
-      sellingData: {},
       buyingDate: (0, _moment2.default)(),
-      sellingDate: (0, _moment2.default)(),
+      cryptoAmount: "",
       fsym: "ETH", // from symbol
-      tsym: "USD", // to symbol -- can be multiple value 'BTC,USD,CAD,EUR'
-      location: "home"
+      location: "home",
+      sellingDate: (0, _moment2.default)(),
+      sellingData: {},
+      tsym: "USD" // to symbol -- can be multiple value 'BTC,USD,CAD,EUR'
     };
     return _this;
   }
 
   _createClass(Layout, [{
+    key: "componentDidMount",
+    value: function () {
+      var _ref3 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3() {
+        var _state, fsym, sellingDate, tsym, data;
+
+        return regeneratorRuntime.wrap(function _callee3$(_context3) {
+          while (1) {
+            switch (_context3.prev = _context3.next) {
+              case 0:
+                _state = this.state, fsym = _state.fsym, sellingDate = _state.sellingDate, tsym = _state.tsym;
+                _context3.next = 3;
+                return this.getData(fsym, tsym, sellingDate);
+
+              case 3:
+                data = _context3.sent;
+
+                this.setState({ buyingData: data, sellingData: data });
+
+              case 5:
+              case "end":
+                return _context3.stop();
+            }
+          }
+        }, _callee3, this);
+      }));
+
+      function componentDidMount() {
+        return _ref3.apply(this, arguments);
+      }
+
+      return componentDidMount;
+    }()
+  }, {
     key: "render",
     value: function render() {
-      console.log(this.state.buyingData, this.state.sellingData);
-
       return _react2.default.createElement(
         "div",
         { className: "home" },
