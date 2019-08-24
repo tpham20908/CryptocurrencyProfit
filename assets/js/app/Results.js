@@ -1,10 +1,6 @@
 import React, { Component } from "react";
 
 class Results extends Component {
-  componentDidMount() {
-    (adsbygoogle = window.adsbygoogle || []).push({});
-  }
-
   formatDate = (day, month, year) => {
     let monthText;
     switch (month) {
@@ -99,15 +95,7 @@ class Results extends Component {
       <section id="results">
         <div className="container">
           <div className="col-md-12">
-            <div className="ads">
-              <ins
-                className="adsbygoogle"
-                style={{ display: "block" }}
-                data-ad-client="ca-pub-4307977294782063"
-                data-ad-slot="7806394673"
-                data-ad-format="auto"
-              />
-            </div>
+            <div className="ads" />
           </div>
           <div className="col-md-12">
             <h2>
@@ -129,15 +117,7 @@ class Results extends Component {
             </a>
           </div>
           <div className="col-md-12">
-            <div className="ads">
-              <ins
-                className="adsbygoogle"
-                style={{ display: "block" }}
-                data-ad-client="ca-pub-4307977294782063"
-                data-ad-slot="7806394673"
-                data-ad-format="auto"
-              />
-            </div>
+            <div className="ads" />
           </div>
         </div>
       </section>

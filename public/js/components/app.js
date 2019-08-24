@@ -230,11 +230,6 @@ var Results = function (_Component) {
   }
 
   _createClass(Results, [{
-    key: "componentDidMount",
-    value: function componentDidMount() {
-      (adsbygoogle = window.adsbygoogle || []).push({});
-    }
-  }, {
     key: "render",
     value: function render() {
       var _props = this.props,
@@ -272,17 +267,7 @@ var Results = function (_Component) {
           _react2.default.createElement(
             "div",
             { className: "col-md-12" },
-            _react2.default.createElement(
-              "div",
-              { className: "ads" },
-              _react2.default.createElement("ins", {
-                className: "adsbygoogle",
-                style: { display: "block" },
-                "data-ad-client": "ca-pub-4307977294782063",
-                "data-ad-slot": "7806394673",
-                "data-ad-format": "auto"
-              })
-            )
+            _react2.default.createElement("div", { className: "ads" })
           ),
           _react2.default.createElement(
             "div",
@@ -332,17 +317,7 @@ var Results = function (_Component) {
           _react2.default.createElement(
             "div",
             { className: "col-md-12" },
-            _react2.default.createElement(
-              "div",
-              { className: "ads" },
-              _react2.default.createElement("ins", {
-                className: "adsbygoogle",
-                style: { display: "block" },
-                "data-ad-client": "ca-pub-4307977294782063",
-                "data-ad-slot": "7806394673",
-                "data-ad-format": "auto"
-              })
-            )
+            _react2.default.createElement("div", { className: "ads" })
           )
         )
       );
